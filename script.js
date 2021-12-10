@@ -24,7 +24,7 @@ xhr.onreadystatechange = function() {                                           
             var showStart   = showNode.getElementsByTagName("dttmShowStart")[0].innerHTML;  //Otetaan käytävän esityksen aloitusaika
             var showGenre   = showNode.getElementsByTagName("Genres")[0].innerHTML;         //Otetaan käytävän esityksen genre
             var showTheater = showNode.getElementsByTagName("Theatre")[0].innerHTML;        //Otetaan käytävän esityksen teatterisijointi
-            var showSynopsis= showNode.getElementsByTagName("EventURL")[0].innerHTML;
+            var showSynopsis= showNode.getElementsByTagName("EventURL")[0].innerHTML;       //Otetaan esityksen nettisivu
             var showCover   = "";                                                           //Luodaan tyhjä muuttuja mahdolliselle kansikuvalle
             var coverNodes  = showNode.getElementsByTagName("EventMediumImagePortrait");    //Yritetään hakea kansikuvaa
             if (coverNodes.length > 0) {                                                    //Jos coverNodes sisältää jotain
@@ -50,7 +50,7 @@ xhr.onreadystatechange = function() {                                           
             if (!data[showTheater][showTitle]) {                                            //Tässä käydään läpi saatu data ja lisätään ne data-kokoelmaan jos elokuvaa ei vielä ole datassa
                 data[showTheater][showTitle] = {};                                          //Lisätään elokuvan nimi
                 data[showTheater][showTitle]["Genres"] = showGenre;                         //Lisätään elokuvalle genre
-                data[showTheater][showTitle]["Synopsis"] = showSynopsis;
+                data[showTheater][showTitle]["Synopsis"] = showSynopsis;                    //Lisätään event url dataan
                 data[showTheater][showTitle]["Cover"] = showCover;                          //Lisätään kansikuva
                 data[showTheater][showTitle]["Image"] = showImage;                          //Lisätään toinen kuva
                 data[showTheater][showTitle]["Age"] = showAge;                              //Lisätään ikäraja-kuvake
@@ -69,7 +69,7 @@ xhr.onreadystatechange = function() {                                           
 
 function selected(theater) {                                                                //Funktio, joka käynnistyy kun valitaan joku selectin vaihtoehdoista (onChange)
     var shows = data[theater];                                                              //Luodaan muuttuja, jolle annetaan datasta kaikki yhden teatterin esitykset
-    var i = 0;
+    var i = 0;                                                                              //luodaan indeksimuuttuja looppia varten
 
     timeTable.innerHTML = "";                                                               //tyhjennetään timeTable-div
 
@@ -86,8 +86,8 @@ function selected(theater) {                                                    
                     "</p>" + "<a href=" + Synopsis + "><img class=movieImg src='" + Cover + "'></a>" +          //Kuvat laitetaan myös käyttäen saatua linkkiä
                     "<img class=movieImg src='" + Age + "'>" +                              //Luodaan myös luokat luoduille elementeille
                     "<img class=movieImg src='" + Image + "'>" +                            //Sama jatkuu
-                    "<p class=times>" + times.map(t => t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() //Otetaan aloitusajat ja formatoidaan ne kivempaan muotoon
-                    + " " + t.getHours() + ":" + t.getMinutes()).join(" -- \b") + "</p>";   //Yhdistetään kaikki mahdolliset aloitusajata väliviivalla
+                    "<p class=times>" + times.map(t => t.getDate() + "/" + t.getMonth() + "/" + t.getFullYear() //Otetaan aloitusajat ja formatoidaan ne kivempaan muotoon yödyntäen date-muuttujan metodeita
+                    + " " + t.getHours() + ":" + t.getMinutes()).join(" -- \b") + "</p>";   //Yhdistetään kaikki mahdolliset aloitusajat väliviivoilla
 
 
         stylish.innerHTML += ".bg_" + i +"a::before{background-image:url(" + Cover + ");}"; //Lisätään alussa luotuun style-elementin avulla before-tagi jokailelle taustakuvalle, jotta ne saadaan blurrattua yksittäin
